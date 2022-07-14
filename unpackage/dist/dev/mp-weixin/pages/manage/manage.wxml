@@ -1,0 +1,1 @@
+<view class="manage data-v-55df5bb4"><w-cell vue-id="660b18c0-1" list="{{list}}" data-event-opts="{{[['^click',[['goPage']]]]}}" bind:click="__e" class="data-v-55df5bb4" bind:__l="__l"></w-cell></view>

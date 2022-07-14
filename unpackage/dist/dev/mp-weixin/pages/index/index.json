@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "系统",
+  "usingComponents": {
+    "w-layout": "/components/wUI/w-layout/w-layout",
+    "w-select": "/components/wUI/w-select/w-select",
+    "u-transition": "/node-modules/uview-ui/components/u-transition/u-transition",
+    "w-check-box": "/components/wUI/w-check-box/w-check-box",
+    "w-button": "/components/wUI/w-button/w-button"
+  }
+}

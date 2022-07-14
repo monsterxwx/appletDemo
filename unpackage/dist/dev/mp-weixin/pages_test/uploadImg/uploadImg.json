@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "上传图片测试",
+  "usingComponents": {
+    "w-tab": "/components/wUI/w-tab/w-tab"
+  }
+}

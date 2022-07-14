@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "封装表单展示",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "w-form": "/components/wUI/w-form/w-form",
+    "w-button": "/components/wUI/w-button/w-button"
+  }
+}

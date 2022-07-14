@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "系统",
+  "usingComponents": {
+    "w-cell": "/components/wUI/w-cell/w-cell"
+  }
+}

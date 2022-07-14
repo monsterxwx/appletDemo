@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "表格演示",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "w-table": "/components/wUI/w-table/w-table"
+  }
+}

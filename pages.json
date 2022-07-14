@@ -1,0 +1,94 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"^w-(.*)": "@/components/wUI/w-$1/w-$1.vue"
+	},
+	"pages": [
+		//登录
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTextStyle": "white" // 状态栏字体为白色
+			}
+		}, {
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "系统"
+			}
+		}, {
+			"path": "pages/manage/manage",
+			"style": {
+				"navigationBarTitleText": "系统"
+			}
+		}
+	],
+	"subPackages": [{ //分包
+		"root": "pages_test",
+		"pages": [
+			{
+				"path": "uploadImg/uploadImg",
+				"style": {
+					"navigationBarTitleText": "上传图片测试"
+				}
+			}
+                , {
+				"path": "getTime/getTime",
+				"style": {
+					"navigationBarTitleText": "时间测试",
+					"enablePullDownRefresh": false
+				}
+                }
+                , {
+				"path": "tableShow/tableShow",
+				"style": {
+					"navigationBarTitleText": "表格演示",
+					"enablePullDownRefresh": false
+				}
+                }
+                , {
+				"path": "treeShow/treeShow",
+				"style": {
+					"navigationBarTitleText": "树型数据展示",
+					"enablePullDownRefresh": false
+				}
+                }
+                , {
+				"path": "formShow/formShow",
+				"style": {
+					"navigationBarTitleText": "封装表单展示",
+					"enablePullDownRefresh": false
+				}
+                }
+            ]
+	}],
+	"preloadRule": { //预下载
+		"pages/index/index": {
+			"network": "all",
+			"packages": ["pages_test"]
+		}
+	},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#7181cb",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/image/home_off.png",
+			"selectedIconPath": "static/image/home_on.png",
+			"text": "首页"
+		}, {
+			"pagePath": "pages/manage/manage",
+			"iconPath": "static/image/user_off.png",
+			"selectedIconPath": "static/image/user_on.png",
+			"text": "管理"
+		}]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#0078D4",
+		"backgroundColor": "#F8F8F8"
+	}
+}

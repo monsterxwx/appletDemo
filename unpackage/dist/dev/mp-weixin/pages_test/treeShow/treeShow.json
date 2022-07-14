@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "树型数据展示",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "w-tree": "/components/wUI/w-tree/w-tree"
+  }
+}

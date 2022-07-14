@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "时间测试",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "w-layout": "/components/wUI/w-layout/w-layout",
+    "w-button": "/components/wUI/w-button/w-button"
+  }
+}
