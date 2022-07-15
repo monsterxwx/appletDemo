@@ -4,7 +4,7 @@
 			marginTop
 			ref="testRef"
 			:formInfo="formDataProps.formInfo"
-			:formData.sync="formDataProps.formData"
+			v-model="formDataProps.formData"
 		>
 			<template #picker>
 				<input class="baseInput" v-model="formDataProps.formData.hhh" />

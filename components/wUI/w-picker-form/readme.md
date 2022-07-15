@@ -3,7 +3,9 @@
 |参数|说明|类型|默认值|
 |-|-|-|-|
 |value|v-model双向绑定的属性|-|-|
-|show|控制是否显示|boolean|false|
+|width|设置显示的宽度|string|'550rpx'|
+|defaultValue|默认显示内容|string|''|
+|bgColor|背景颜色|string|'#eee'|
 |list|渲染的数组列表|array|[]|
 |keyName|数组绑定的key值，即需要显示的值|string|-|
 |date|使用日期选择器|boolean|false|
@@ -23,43 +25,23 @@
 
 ```html
 <template>
-   <w-picker
+   <w-picker-form
+   	width='100%'
+   	defaultValue="请选择日期"
    	date
-   	:show="show"
+   	dateMode="datetime"
    	v-model="pickerValue"
-   	@confirm="selectConfirm"
-   	@close="selectClose"
-   ></w-picker>
+   ></w-picker-form>
 </template>
 <script>
   export default {
     data() {
       return {
-        pickerValue: '',
-				show:false,
-        cellList: [
-          {
-            name: '版本更新',
-            url: ''
-          },
-          {
-            name: '物资管理',
-            url: ''
-          },
-          {
-            name: '人员管理',
-            url: ''
-          }
-        ]
+        pickerValue: ''
       };
     },
     methods: {
-     selectClose() {
-     	this..show = false
-     },
-     openSelect() {
-     	this..show = true
-     },
+
     },
   }
 </script>

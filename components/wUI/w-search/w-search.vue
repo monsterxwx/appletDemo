@@ -12,20 +12,13 @@
 				:clearabled="true"
 				:showAction="false"
 			></u-search>
-			<view class="filter" @click="open">
+			<view class="filter" @click="openPop">
 				<view class="name">条件筛选</view>
 				<u-icon name="arrow-down-fill" color="#0088f1" size="14"></u-icon>
 			</view>
 		</view>
-		<u-popup
-			round="20"
-			:show="show"
-			mode="top"
-			:closeOnClickOverlay="false"
-			@close="close"
-			@open="open"
-		>
-			<view class="popContent">
+		<u-popup round="20" :show="show" mode="top" :closeOnClickOverlay="false" @close="close">
+			<view class="popContent" v-if="filterList.length > 0">
 				<u-cell
 					v-for="(item, index) in filterList"
 					:key="index"
@@ -50,30 +43,18 @@
 				<view class="button confimButton" @click="confirm">确定</view>
 			</view>
 		</u-popup>
-		<template v-for="(item, index) in filterList">
-			<!-- 普通选择 -->
-			<u-picker
-				v-if="!item.date"
-				closeOnClickOverlay
-				@close="selectClose(index)"
-				@confirm="selectConfirm($event, item, index)"
-				@cancel="selectClose(index)"
+		<view v-for="(item, index) in filterList" :key="index">
+			<w-picker
+				:date="item.date"
+				:dateMode="item.dateMode"
 				:show="item.show"
-				:columns="item.dataList"
+				v-model="item[item.prop]"
+				@confirm="selectConfirm(index)"
+				@close="selectClose(index)"
+				:list="item.data"
 				:keyName="item.keyName"
-			></u-picker>
-			<!-- 日期选择 -->
-			<u-datetime-picker
-				v-else
-				closeOnClickOverlay
-				@close="selectClose(index)"
-				@cancel="selectClose(index)"
-				@confirm="selectConfirm($event, item, index)"
-				:show="item.show"
-				v-model="currentDate"
-				:mode="item.dateMode || 'date'"
-			></u-datetime-picker>
-		</template>
+			></w-picker>
+		</view>
 	</view>
 </template>
 
@@ -86,23 +67,34 @@ export default {
 			default: '请输入'
 		},
 		list: {
-			type: Array,
-			default: () => []
+			type: Array
+		}
+	},
+	watch: {
+		list: {
+			immediate: true,
+			deep: true,
+			handler(news) {
+				if (this.filterList.length < 1) {
+					this.filterList = news
+				} else {
+					return
+				}
+			}
 		}
 	},
 	data() {
 		return {
 			show: false,
 			searchValue: '',
-			filterList: this.list,
-			currentDate: dayjs().format('YYYY-MM-DD HH:mm:ss')
+			filterList: [],
 		}
 	},
 	methods: {
 		close() {
 			this.show = false
 		},
-		open() {
+		openPop() {
 			this.show = true
 		},
 		change(e) {
@@ -115,19 +107,7 @@ export default {
 			this.searchValue = ''
 			this.$emit('search')
 		},
-		selectConfirm(e, item, index) {
-			//当模式为日期选择器时
-			if (item.date) {
-				if (item.dateMode == 'datetime') {
-					const formatDate = dayjs(e.value).format('YYYY-MM-DD HH:mm:ss')
-					this.filterList[index][item.prop] = formatDate
-				} else if (item.dateMode == 'date') {
-					const formatDate = dayjs(e.value).format('YYYY-MM-DD')
-					this.filterList[index][item.prop] = formatDate
-				}
-			} else {
-				this.filterList[index][item.prop] = e.value[0][item.keyName]
-			}
+		selectConfirm(index) {
 			this.filterList[index].show = false
 		},
 		selectClose(index) {
@@ -150,7 +130,7 @@ export default {
 				searchParams[item.prop] = item[item.prop]
 			})
 			this.$emit('confim', searchParams)
-			this.show=false
+			this.show = false
 		}
 	}
 }

@@ -1,4 +1,16 @@
+#### props
 
+|参数|说明|类型|默认值|
+|-|-|-|-|
+|defaultValue|搜索框默认显示的文字|string|''|
+|list|配置search类型|array|[]|
+
+#### events
+
+|事件名称|作用|
+|-|-|
+|search|失去焦点后触发搜索事件|
+|confim|点击确认搜索后的事件|
 
 #### 使用举例
 ```
@@ -24,7 +36,7 @@ export default {
 					defaultValue: '请选择',
 					show: false,
 					keyName: 'name',
-					dataList: [[{ name: '1' }, { name: '2' }, { name: '3' }]]
+					data: [{ name: '1' }, { name: '2' }, { name: '3' }]
 				},
 				{
 					prop: 'startTime',

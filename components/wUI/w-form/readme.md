@@ -4,13 +4,17 @@
 |-|-|-|-|
 |formInfo|表单内容|object|-|
 |marginTop|是否有上边距|boolean|false|
-|formData|绑定的表单数据|object|-|
-|rules|验证规则|object|-|
+|value|v-model绑定的表单数据|object|-|
 |labelPosition|左侧文字的位置|string|'#left'|
 |labelStyle|表单左侧文字样式|object|{ color: '#0078d4', fontSize: '28rpx' }|
 |formStyle|表单样式|object|-|
 |labelWidth|表单左侧的宽度|string|'140rpx'|
 
+#### events
+
+|事件名称|作用|
+|-|-|
+|inputBlur|输入框失去焦点后触发，参数第一个为当前输入框的值，第二个为属性名|
 
 #### 使用举例
 
@@ -23,7 +27,7 @@
 				marginTop
 				ref="taskRef"
 				:formInfo="formInfo"
-				:formData.sync="formData"
+				v-model="formData"
 			>
 				<template #trailName>
 					<view style="width: 100%;">{{ trailName }}</view>

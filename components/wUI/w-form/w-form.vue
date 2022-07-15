@@ -20,7 +20,7 @@
 				>
 					<template v-if="item.type === `input`">
 						<u-input
-							@blur='inputBlur($event,item.model)'
+							@blur="inputBlur($event, item.model)"
 							:bgColor="item.bgColor || '#fff'"
 							:placeholder="item.placeholder"
 							:type="item.inputType || 'text'"
@@ -66,9 +66,8 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		formData: {
-			type: Object,
-			required: false
+		value: {
+			default: ''
 		},
 		labelPosition: {
 			type: String,
@@ -89,28 +88,29 @@ export default {
 			default: '140rpx'
 		}
 	},
-	data() {
-		return {
-			tempData: {}
-		}
-	},
-	options: { styleIsolation: 'shared' },
 	watch: {
 		tempData: {
 			handler(newValueData) {
-				this.$emit('update:formData', newValueData)
+				this.$emit('input', newValueData)
 			},
 			deep: true,
 			immediate: true
 		},
-		formData: {
+		value: {
+			deep: true,
+			immediate: true,
 			handler(newValueData) {
 				this.tempData = newValueData
-			},
-			deep: true,
-			immediate: true
+			}
 		}
 	},
+	data() {
+		return {
+			tempData: this.value
+		}
+	},
+	options: { styleIsolation: 'shared' },
+
 	computed: {
 		rulesData() {
 			const rules = {}
@@ -127,13 +127,13 @@ export default {
 		}
 	},
 	methods: {
-			inputBlur(e,prop) {
-				const input={
-					value:e,
-					prop:prop
-				}
-				this.$emit('inputBlur',input)
+		inputBlur(e, prop) {
+			const input = {
+				value: e,
+				prop: prop
 			}
+			this.$emit('inputBlur', input)
+		}
 	}
 }
 </script>
