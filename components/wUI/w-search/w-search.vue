@@ -92,6 +92,7 @@ export default {
 	},
 	methods: {
 		close() {
+			this.filterList.forEach(item=>item.show=false)
 			this.show = false
 		},
 		openPop() {
@@ -105,7 +106,7 @@ export default {
 		},
 		clearValue() {
 			this.searchValue = ''
-			this.$emit('search')
+			this.$emit('search','')
 		},
 		selectConfirm(index) {
 			this.filterList[index].show = false
@@ -114,11 +115,13 @@ export default {
 			this.filterList[index].show = false
 		},
 		openSelect(index) {
+			this.filterList.forEach(item=>item.show=false)
 			this.filterList[index].show = true
 		},
 		reset() {
 			const list = this.filterList
 			list.forEach(item => {
+				item.show=false
 				item[item.prop] = ''
 			})
 			this.filterList = list
@@ -127,6 +130,7 @@ export default {
 			const data = this.filterList
 			const searchParams = {}
 			data.forEach(item => {
+				item.show=false
 				searchParams[item.prop] = item[item.prop]
 			})
 			this.$emit('confim', searchParams)

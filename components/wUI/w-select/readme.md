@@ -11,6 +11,7 @@
 |list|array|[]|展示的内容列表|
 |showClose|boolean|true|是否显示删除按钮|
 |multiple|boolean|false|是否开启多选|
+|prop||''|有初始值时设置|
 |filterable|boolean|false|是否开启搜索功能，开启后直接输入值不选择也可以保存内容|
 
 

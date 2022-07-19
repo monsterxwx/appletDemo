@@ -22,7 +22,6 @@
 					:disabled="!filterable"
 					:style="{ height: height, paddingRight: '30rpx', fontSize: '28rpx', color: color }"
 					@input="inputChange"
-					@blur="closeSelect"
 					type="text"
 					v-model="inputData"
 				/>
@@ -32,7 +31,6 @@
 				:disabled="!filterable"
 				:style="{ height: height, paddingRight: '30rpx', fontSize: '28rpx', color: color }"
 				@input="inputChange"
-				@blur="closeSelect"
 				:placeholder="defaultValue"
 				:placeholder-style="placeholderColor"
 				type="text"
@@ -52,7 +50,7 @@
 		<!-- 单选时的下拉框 -->
 		<view
 			v-if="!multiple"
-			:style="{ width: width,color:'#737478' }"
+			:style="{ width: width, color: '#737478' }"
 			v-show="show"
 			:class="isShow ? 'animation-top' : 'animation-bottom'"
 			class="content"
@@ -115,7 +113,7 @@ export default {
 		},
 		color: {
 			type: String,
-			default: '#999999'
+			default: '#606266'
 		},
 		placeholderColor: {
 			type: String,
@@ -151,6 +149,20 @@ export default {
 		//双向绑定的值
 		value: {
 			default: ''
+		},
+		//初始值
+		prop: {
+			default: ''
+		}
+	},
+	watch: {
+		prop: {
+			immediate: true,
+			handler(newValueData) {
+				if (!this.inputData) {
+					this.inputData = newValueData
+				}
+			}
 		}
 	},
 	data() {
@@ -192,16 +204,6 @@ export default {
 			this.inputData = item[this.valueName]
 			this.$emit('change', item)
 			this.show = false
-		},
-		closeSelect() {
-			if (this.show === true) {
-				this.isShow = false
-			} else {
-				this.isShow = true
-			}
-			setTimeout(() => {
-				this.show = false
-			}, 200)
 		},
 		inputChange(e) {
 			console.log(e.detail.value)

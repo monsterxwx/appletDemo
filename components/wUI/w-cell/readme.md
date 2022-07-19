@@ -4,7 +4,7 @@
 |-|-|-|-|
 |list|渲染的列表数据|array|[]|
 |keyName|要显示的内容属性值名称|string|'name'|
-|color|文字颜色|string|'#000'|
+|color|文字颜色|string|''|
 |marginTop|是否要开启margin-top，值为20rpx|boolean|true|
 
 
@@ -20,18 +20,30 @@
 ```javascript
 <w-cell :list='cellList' keyName='name' @click='goDetail'></w-cell>
 
-cellList: [
-          {
-            name: '版本更新',
-            url: ''
-          },
-          {
-            name: '物资管理',
-            url: ''
-          },
-          {
-            name: '人员管理',
-            url: ''
-          }
-        ]
+			list: [
+				{
+					name: '项目名',
+					content: uni.getStorageSync('userInfo')['title_name']
+				},
+				{
+					name: '标段名',
+					url: '/pages_task/taskManage/addTask/addTask',
+					content:'test',
+					arrow:true
+				},
+				{
+					name: '用户名',
+					content: uni.getStorageSync('userInfo').login_name
+				},
+				{
+					name: '修改密码',
+					url: '/pages_task/taskManage/addTask/addTask',
+					arrow: true
+				},
+				{
+					name: '退出登录',
+					url: '/pages/login/login',
+					arrow: true
+				}
+			]
 ```
