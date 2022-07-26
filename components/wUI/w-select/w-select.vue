@@ -149,14 +149,10 @@ export default {
 		//双向绑定的值
 		value: {
 			default: ''
-		},
-		//初始值
-		prop: {
-			default: ''
 		}
 	},
 	watch: {
-		prop: {
+		value: {
 			immediate: true,
 			handler(newValueData) {
 				if (!this.inputData) {
