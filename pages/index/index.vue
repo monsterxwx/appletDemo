@@ -7,11 +7,9 @@
 			<view class="test ">
 				<w-select
 					style="margin-left: 20rpx;margin-bottom: 20rpx;"
-					
 					defaultValue="所有水果"
 					v-model="valueData"
 					:list="checkboxList"
-					keyName="label"
 					valueName="label"
 				></w-select>
 				<u-transition :show="loading" mode="slide-down">

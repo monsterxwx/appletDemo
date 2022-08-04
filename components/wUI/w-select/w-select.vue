@@ -2,7 +2,12 @@
 	<view
 		class="wSelect"
 		:class="show ? 'active' : ''"
-		:style="{ width: width, height: height, backgroundColor: bgColor }"
+		:style="{
+			width: width,
+			height: height,
+			backgroundColor: bgColor,
+			borderRadius: round ? '6rpx' : 'none'
+		}"
 	>
 		<view @click="openSelect" class="pickerSelect">
 			<view :style="{ height: height }" v-if="multiple" class="multipleChoice">
@@ -130,20 +135,25 @@ export default {
 		//默认显示的内容
 		defaultValue: {
 			type: String,
-			default: '所有人'
+			default: '请选择'
 		},
 		//显示的内容
 		valueName: {
 			type: String,
-			default: 'value'
+			required: true
 		},
 		list: {
 			type: Array,
-			default: () => []
+			default: () => [],
+			required: true
 		},
 		//双向绑定的值
 		value: {
 			default: ''
+		},
+		round: {
+			type: Boolean,
+			default: true
 		}
 	},
 	watch: {
@@ -244,8 +254,6 @@ export default {
 <style lang="scss" scoped>
 .wSelect {
 	border: 2rpx solid #dcdfe6;
-	background-color: #fff;
-	border-radius: 6rpx;
 	transition: all 0.5s;
 
 	.pickerSelect {
