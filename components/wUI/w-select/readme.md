@@ -1,17 +1,16 @@
 #### props
 
-|名称|类型|默认值|说明|
-|-|-|-|-|
-|width|string|'300rpx'|选择框宽度|
-|height|string|'60rpx'|选择框高度|
-|bgColor|string|'#fff'|选择框的背景颜色|
-|defaultValue|string|'所有人'|默认显示的名称|
-|keyName|string|'id'|绑定的key值，唯一|
-|valueName|string|'value'|显示的内容字段名|
-|list|array|[]|展示的内容列表|
-|showClose|boolean|true|是否显示删除按钮|
-|multiple|boolean|false|是否开启多选|
-|filterable|boolean|false|是否开启搜索功能，开启后直接输入值不选择也可以保存内容|
+|名称					|类型		|默认值		|说明																										|
+|-						|-			|-				|-																											|
+|width				|string	|'300rpx'	|选择框宽度																							|
+|height				|string	|'60rpx'	|选择框高度																							|
+|bgColor			|string	|'#fff'		|选择框的背景颜色																				|
+|defaultValue	|string	|'所有人'	|默认显示的名称																					|
+|valueName		|string	|'value'	|显示的内容字段名																				|
+|list					|array	|[]				|展示的内容列表																					|
+|showClose		|boolean|true			|是否显示删除按钮																				|
+|multiple			|boolean|false		|是否开启多选																						|
+|filterable		|boolean|false		|是否开启搜索功能，开启后直接输入值不选择也可以保存内容	|
 
 
 #### events
