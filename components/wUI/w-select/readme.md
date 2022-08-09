@@ -9,6 +9,7 @@
 |color						|string	|'#606266'			|字体颜色																								|
 |placeholderColor	|string	|'color:#bcbec4'|提示文字的字体颜色																			|
 |defaultValue			|string	|'请选择'				|默认显示的名称																					|
+|keyName					|string	|								|绑定的key，不传绑定index																|
 |valueName				|string	|'value'				|显示的内容字段名,必传																	|
 |list							|array	|[]							|展示的内容列表																					|
 |showClose				|boolean|true						|是否显示删除按钮																				|
