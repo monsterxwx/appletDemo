@@ -11,12 +11,7 @@
 				:class="[value ? 'checked' : '', shape == 'circle' ? 'circle' : '']"
 				class="checkbox"
 			>
-				<image
-					v-if="value"
-					class="arrow"
-					src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZD0iTTEwIDE1LjE3Mmw5LjE5Mi05LjE5MyAxLjQxNSAxLjQxNEwxMCAxOGwtNi4zNjQtNi4zNjQgMS40MTQtMS40MTR6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDEpIi8+PC9zdmc+"
-					mode=""
-				></image>
+				<image v-if="value" class="arrow" :src="arrowBa64" mode=""></image>
 			</view>
 			<view @click="handleClick" class="text"><slot></slot></view>
 		</view>
@@ -69,6 +64,8 @@ export default {
 		return {
 			isSelect: false,
 			multipleData: [],
+			arrowBa64:
+				'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PHBhdGggZD0iTTEwIDE1LjE3Mmw5LjE5Mi05LjE5MyAxLjQxNSAxLjQxNEwxMCAxOGwtNi4zNjQtNi4zNjQgMS40MTQtMS40MTR6IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDEpIi8+PC9zdmc+',
 			radioData: ''
 		}
 	},
@@ -166,11 +163,16 @@ export default {
 			background-color: #2979ff;
 			border: none;
 			position: relative;
+			width: 36rpx;
+			height: 36rpx;
+			border: 2rpx solid #2979ff;
 			.arrow {
 				position: absolute;
 				left: 50%;
 				top: 50%;
 				transform: translate(-50%, -50%);
+				width: 100%;
+				height: 100%;
 			}
 		}
 
