@@ -1,9 +1,11 @@
 #### props
 
-|参数|说明|类型|默认值|
-|-|-|-|-|
-|defaultValue|搜索框默认显示的文字|string|''|
-|list|配置search类型|array|[]|
+|参数					|说明									|类型		|默认值	|
+|-						|-										|-			|-			|
+|defaultValue	|搜索框默认显示的文字	|string	|''			|
+|list					|配置search类型				|array	|[]			|
+|bgColor			|配置search背景				|string	|'#eee'	|
+|filter				|是否开启过滤条件搜索	|boolean|true		|
 
 #### events
 

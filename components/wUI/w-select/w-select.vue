@@ -64,7 +64,7 @@
 				class="item"
 				:class="value == item[valueName] ? 'choose' : ''"
 				v-for="(item, index) in listData"
-				:key="item[keyName] || index"
+				:key="index"
 				@click="clickSelect(item)"
 			>
 				{{ item[valueName] }}
@@ -83,7 +83,7 @@
 				class="item"
 				:class="multiSelectList.find(res => res[valueName] == item[valueName]) ? 'choose' : ''"
 				v-for="(item, index) in listData"
-				:key="item[keyName] || index"
+				:key="index"
 				@click="multiSelect(item)"
 			>
 				{{ item[valueName] }}
@@ -136,10 +136,6 @@ export default {
 		defaultValue: {
 			type: String,
 			default: '请选择'
-		},
-		//绑定的key
-		keyName: {
-			type: String
 		},
 		//显示的内容
 		valueName: {

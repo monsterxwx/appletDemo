@@ -1,5 +1,5 @@
 <template>
-	<view class="w-search">
+	<view class="w-search" :style="{ backgroundColor: bgColor }">
 		<view class="search">
 			<u-search
 				shape="square"
@@ -12,7 +12,7 @@
 				:clearabled="true"
 				:showAction="false"
 			></u-search>
-			<view class="filter" @click="openPop">
+			<view class="filter" v-if="filter" @click="openPop">
 				<view class="name">条件筛选</view>
 				<u-icon name="arrow-down-fill" color="#0088f1" size="14"></u-icon>
 			</view>
@@ -62,12 +62,21 @@
 import dayjs from 'dayjs'
 export default {
 	props: {
+		bgColor: {
+			type: String,
+			default: '#eee'
+		},
 		defaultValue: {
 			type: String,
 			default: '请输入'
 		},
 		list: {
-			type: Array
+			type: Array,
+			default: () => []
+		},
+		filter: {
+			type: Boolean,
+			default: true
 		}
 	},
 	watch: {
@@ -87,12 +96,12 @@ export default {
 		return {
 			show: false,
 			searchValue: '',
-			filterList: [],
+			filterList: []
 		}
 	},
 	methods: {
 		close() {
-			this.filterList.forEach(item=>item.show=false)
+			this.filterList.forEach(item => (item.show = false))
 			this.show = false
 		},
 		openPop() {
@@ -106,7 +115,7 @@ export default {
 		},
 		clearValue() {
 			this.searchValue = ''
-			this.$emit('search','')
+			this.$emit('search', '')
 		},
 		selectConfirm(index) {
 			this.filterList[index].show = false
@@ -115,13 +124,13 @@ export default {
 			this.filterList[index].show = false
 		},
 		openSelect(index) {
-			this.filterList.forEach(item=>item.show=false)
+			this.filterList.forEach(item => (item.show = false))
 			this.filterList[index].show = true
 		},
 		reset() {
 			const list = this.filterList
 			list.forEach(item => {
-				item.show=false
+				item.show = false
 				item[item.prop] = ''
 			})
 			this.filterList = list
@@ -130,7 +139,7 @@ export default {
 			const data = this.filterList
 			const searchParams = {}
 			data.forEach(item => {
-				item.show=false
+				item.show = false
 				searchParams[item.prop] = item[item.prop]
 			})
 			this.$emit('confim', searchParams)
@@ -143,7 +152,6 @@ export default {
 <style lang="scss" scoped>
 .w-search {
 	.search {
-		background-color: #eee;
 		padding: 20rpx;
 		display: flex;
 		justify-content: space-between;
