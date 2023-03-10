@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "check-box": "/components/wUI/w-tree/item/check-box"
-  }
-}

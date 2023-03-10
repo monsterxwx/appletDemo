@@ -1,1 +1,0 @@
-<view class="wLayout data-v-09573dc0" style="{{'background-color:'+(bgColor)+';'}}"><block wx:if="{{$slots.common}}"><slot name="common"></slot></block><block wx:else>common，用于不需要滚动的内容</block><view class="scroll-content data-v-09573dc0"><block wx:if="{{$slots.scroll}}"><slot name="scroll"></slot></block><block wx:else>scroll，用于滚动内容</block></view><slot name="bottom"></slot></view>

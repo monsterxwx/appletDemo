@@ -1,8 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "navigationBarTextStyle": "white",
-  "usingComponents": {
-    "w-check-box": "/components/wUI/w-check-box/w-check-box",
-    "u-toast": "/node-modules/uview-ui/components/u-toast/u-toast"
-  }
-}
