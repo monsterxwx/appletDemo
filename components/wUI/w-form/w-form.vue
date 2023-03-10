@@ -126,6 +126,7 @@ export default {
 			return rules
 		}
 	},
+
 	methods: {
 		inputBlur(e, prop) {
 			const input = {

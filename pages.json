@@ -25,42 +25,36 @@
 	],
 	"subPackages": [{ //分包
 		"root": "pages_test",
-		"pages": [
-			{
-				"path": "uploadImg/uploadImg",
-				"style": {
-					"navigationBarTitleText": "上传图片测试"
-				}
+		"pages": [{
+			"path": "uploadImg/uploadImg",
+			"style": {
+				"navigationBarTitleText": "上传图片测试"
 			}
-                , {
-				"path": "getTime/getTime",
-				"style": {
-					"navigationBarTitleText": "时间测试",
-					"enablePullDownRefresh": false
-				}
-                }
-                , {
-				"path": "tableShow/tableShow",
-				"style": {
-					"navigationBarTitleText": "表格演示",
-					"enablePullDownRefresh": false
-				}
-                }
-                , {
-				"path": "treeShow/treeShow",
-				"style": {
-					"navigationBarTitleText": "树型数据展示",
-					"enablePullDownRefresh": false
-				}
-                }
-                , {
-				"path": "formShow/formShow",
-				"style": {
-					"navigationBarTitleText": "封装表单展示",
-					"enablePullDownRefresh": false
-				}
-                }
-            ]
+		}, {
+			"path": "getTime/getTime",
+			"style": {
+				"navigationBarTitleText": "时间测试",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "tableShow/tableShow",
+			"style": {
+				"navigationBarTitleText": "表格演示",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "treeShow/treeShow",
+			"style": {
+				"navigationBarTitleText": "树型数据展示",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "formShow/formShow",
+			"style": {
+				"navigationBarTitleText": "封装表单展示",
+				"enablePullDownRefresh": false
+			}
+		}]
 	}],
 	"preloadRule": { //预下载
 		"pages/index/index": {

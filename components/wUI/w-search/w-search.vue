@@ -167,6 +167,7 @@ export default {
 			margin-left: 10rpx;
 			.name {
 				margin-right: 10rpx;
+				font-size: 14px;
 			}
 		}
 	}

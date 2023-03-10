@@ -1,8 +1,6 @@
 /* uni.scss */
 @import 'uview-ui/theme.scss';
 
-// @import "/colorui/animation.css";
-
 //遍历字体大小从24rpx->40rpx
  @for $i from 12 through 20 {
   .fs-#{$i} { font-size: 2rpx * $i; }

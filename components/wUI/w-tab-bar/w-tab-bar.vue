@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="w-tab-bar">
 		<u-tabbar
 			:value="name"
 			@change="tabbarChange"
@@ -11,6 +11,9 @@
 			<template v-for="item in tabList">
 				<u-tabbar-item
 					v-if="item.show"
+					:customStyle="{
+						backgroundColor: name === item.text ? '#ebebeb' : ''
+					}"
 					:name="item.text"
 					:text="item.text"
 					:icon="name === item.text ? item.acitveIcon : item.defaultIcon"
@@ -28,6 +31,7 @@ export default {
 	data() {
 		return {}
 	},
+	options: { styleIsolation: 'apply-shared' },
 	computed: {
 		tabList() {
 			return this.$store.state.filterRouterList
@@ -44,4 +48,4 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped></style>

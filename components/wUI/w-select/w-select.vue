@@ -1,101 +1,59 @@
 <template>
-	<view
-		class="wSelect"
-		:class="show ? 'active' : ''"
-		:style="{
-			width: width,
-			height: height,
-			backgroundColor: bgColor,
-			borderRadius: round ? '6rpx' : 'none'
-		}"
-	>
-		<view @click="openSelect" class="pickerSelect">
-			<view :style="{ height: height }" v-if="multiple" class="multipleChoice">
-				<view
-					class="defaultValue"
-					:style="{ color: color }"
-					v-if="!inputData && multiSelectList.length < 1"
-				>
+	<view class="w-select">
+		<view :class="isShow ? 'select-wrap-active' : ''" class="select-wrap" @click="changeShow">
+			<view v-if="multiple" class="select-content">
+				<view class="select-content-item-default" v-if="multiSelectList.length === 0">
 					{{ defaultValue }}
 				</view>
-				<view class="option" v-if="multiSelectList.length > 0">
-					<view class="">{{ multiSelectList[0][valueName] }}</view>
-					<image class="img" @click.stop="multiDelete" :src="refreshUrl" mode=""></image>
+				<view class="select-content-item" v-if="multiSelectList.length > 0">
+					{{ multiSelectList[0][valueName] }}
 				</view>
-				<view v-if="multiSelectList.length > 1" class="more">{{ multiLength }}</view>
-				<input
-					:disabled="!filterable"
-					:style="{ height: height, paddingRight: '30rpx', fontSize: '28rpx', color: color }"
-					@input="inputChange"
-					type="text"
-					v-model="inputData"
-				/>
+				<view class="select-content-item" v-if="multiSelectList.length > 1">{{ multiLength }}</view>
 			</view>
 			<input
-				v-else
-				:disabled="!filterable"
-				:style="{ height: height, paddingRight: '30rpx', fontSize: '28rpx', color: color }"
+				v-if="!multiple || filterable"
+				type="text"
 				@input="inputChange"
 				:placeholder="defaultValue"
-				:placeholder-style="placeholderColor"
-				type="text"
+				:disabled="!filterable"
 				v-model="inputData"
 			/>
-			<view v-if="!inputData || !showClose" :class="show ? 'arrow-up' : 'arrow'"></view>
-			<view class="showClose" v-if="showClose && inputData">
-				<image @click.stop="refreshValue" :src="refreshUrl" mode=""></image>
+			<view @click.stop="refreshValue" class="close-icon" v-if="showClose && value.length > 0">
+				<image :src="refreshUrl" mode=""></image>
 			</view>
 			<view
-				v-show="show"
+				v-if="value.length <= 0 || !showClose"
+				:class="isShow ? 'w-select-arrow-up' : ''"
+				class="w-select-arrow "
+			/>
+			<view
+				v-show="optionsShow"
 				:class="isShow ? 'animation-top' : 'animation-bottom'"
-				class="tips"
-				:style="{ top: tipsPositon }"
-			></view>
-		</view>
-		<!-- 单选时的下拉框 -->
-		<view
-			v-if="!multiple"
-			:style="{ width: width, color: '#737478' }"
-			v-show="show"
-			:class="isShow ? 'animation-top' : 'animation-bottom'"
-			class="content"
-		>
-			<view
-				class="item"
-				:class="value == item[valueName] ? 'choose' : ''"
-				v-for="(item, index) in listData"
-				:key="index"
-				@click="clickSelect(item)"
+				class="select-options"
 			>
-				{{ item[valueName] }}
+				<view
+					@click.stop="handleClickItem(item)"
+					:class="
+						multiple && multiSelectList.find(res => res[keyName] === item[keyName])
+							? 'item-active'
+							: value === item[keyName]
+							? 'item-active'
+							: ''
+					"
+					v-for="item in filterList"
+					class="select-option-item"
+				>
+					{{ item[valueName] }}
+				</view>
+				<view class="options-no-data" v-if="filterList.length < 1">无匹配数据~</view>
 			</view>
-			<view class="item" v-if="listData.length < 1">无匹配项</view>
 		</view>
-		<!-- 多选的下拉框 -->
-		<view
-			v-else
-			:style="{ width: width }"
-			v-show="show"
-			:class="isShow ? 'animation-top' : 'animation-bottom'"
-			class="content"
-		>
-			<view
-				class="item"
-				:class="multiSelectList.find(res => res[valueName] == item[valueName]) ? 'choose' : ''"
-				v-for="(item, index) in listData"
-				:key="index"
-				@click="multiSelect(item)"
-			>
-				{{ item[valueName] }}
-			</view>
-			<view class="item" v-if="listData.length < 1">无匹配项</view>
-		</view>
-		<view v-if="show" @click="closeContentSelect" class="contentMask"></view>
+		<view v-if="isShow" @click="closeContentSelect" class="contentMask"></view>
 	</view>
 </template>
+
 <script>
 export default {
-	name: 'wSelect',
 	props: {
 		//是否多选
 		multiple: {
@@ -110,27 +68,18 @@ export default {
 		//是否显示关闭按钮
 		showClose: {
 			type: Boolean,
-			default: true
+			default: false
 		},
-		width: {
-			type: String,
-			default: '300rpx'
+		//渲染列表
+		list: {
+			type: Array,
+			default: () => [],
+			required: true
 		},
-		color: {
-			type: String,
-			default: '#606266'
-		},
-		placeholderColor: {
-			type: String,
-			default: 'color:#bcbec4'
-		},
-		bgColor: {
-			type: String,
-			default: '#fff'
-		},
-		height: {
-			type: String,
-			default: '60rpx'
+		//双向绑定的值
+		value: {
+			type: [Array, String, Number],
+			default: ''
 		},
 		//默认显示的内容
 		defaultValue: {
@@ -142,238 +91,214 @@ export default {
 			type: String,
 			required: true
 		},
-		list: {
-			type: Array,
-			default: () => [],
+		// 绑定的内容
+		keyName: {
+			type: String,
 			required: true
-		},
-		//双向绑定的值
-		value: {
-			default: ''
-		},
-		round: {
-			type: Boolean,
-			default: true
 		}
 	},
 	watch: {
-		value: {
+		list: {
 			immediate: true,
-			handler(newValueData) {
-				if (!this.inputData) {
-					this.inputData = newValueData
+			deep: true,
+			handler(news) {
+				this.filterList = news
+				const findItem = news.find(item => item[this.keyName] === this.value)
+				if (findItem) {
+					this.inputData = findItem[this.valueName]
 				}
 			}
-		}
-	},
-	data() {
-		return {
-			show: false,
-			isShow: false,
-			multiSelectList: [],
-			inputData: '',
-			listData: this.list,
-			refreshUrl:
-				'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4wMSIvPjxwYXRoIGQ9Ik0yNCA0NEMzNS4wNDU3IDQ0IDQ0IDM1LjA0NTcgNDQgMjRDNDQgMTIuOTU0MyAzNS4wNDU3IDQgMjQgNEMxMi45NTQzIDQgNCAxMi45NTQzIDQgMjRDNCAzNS4wNDU3IDEyLjk1NDMgNDQgMjQgNDRaIiBmaWxsPSJub25lIiBzdHJva2U9IiM3YzZlNmUiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yOS42NTY5IDE4LjM0MzFMMTguMzQzMiAyOS42NTY4IiBzdHJva2U9IiM3YzZlNmUiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE4LjM0MzIgMTguMzQzMUwyOS42NTY5IDI5LjY1NjgiIHN0cm9rZT0iIzdjNmU2ZSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4='
 		}
 	},
 	computed: {
 		multiLength() {
 			const length = this.multiSelectList.length - 1
 			return '+' + length
-		},
-		tipsPositon() {
-			let num = this.height.replace('rpx', '')
-			let numAdd = Number(num) + Number(10)
-			return numAdd + 'rpx'
+		}
+	},
+	data() {
+		return {
+			inputData: '',
+			multiSelectList: this.multiple ? this.value : [],
+			isShow: false,
+			optionsShow: false,
+			filterList: [],
+			refreshUrl:
+				'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiIGZpbGwtb3BhY2l0eT0iMC4wMSIvPjxwYXRoIGQ9Ik0yNCA0NEMzNS4wNDU3IDQ0IDQ0IDM1LjA0NTcgNDQgMjRDNDQgMTIuOTU0MyAzNS4wNDU3IDQgMjQgNEMxMi45NTQzIDQgNCAxMi45NTQzIDQgMjRDNCAzNS4wNDU3IDEyLjk1NDMgNDQgMjQgNDRaIiBmaWxsPSJub25lIiBzdHJva2U9IiM3YzZlNmUiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0yOS42NTY5IDE4LjM0MzFMMTguMzQzMiAyOS42NTY4IiBzdHJva2U9IiM3YzZlNmUiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE4LjM0MzIgMTguMzQzMUwyOS42NTY5IDI5LjY1NjgiIHN0cm9rZT0iIzdjNmU2ZSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4='
 		}
 	},
 	methods: {
-		openSelect() {
-			this.listData = this.list
-			if (this.show === true) {
-				this.isShow = false
+		changeShow() {
+			this.isShow = !this.isShow
+			if (this.isShow === false) {
+				this.filterList = this.list
+				setTimeout(() => {
+					this.optionsShow = false
+				}, 200)
 			} else {
-				this.isShow = true
+				this.optionsShow = this.isShow
 			}
+		},
+		closeContentSelect() {
+			this.isShow = false
 			setTimeout(() => {
-				this.show = !this.show
+				this.optionsShow = false
 			}, 200)
 		},
-		clickSelect(item) {
-			this.$emit('input', item[this.valueName])
-			this.inputData = item[this.valueName]
-			this.$emit('change', item)
-			this.show = false
-		},
 		inputChange(e) {
-			console.log(e.detail.value)
-			let value = e.detail.value
+			const value = e.detail.value
 			this.$emit('input', value)
-			if (value) {
-				this.listData = this.listData.filter(item => item[this.valueName].includes(value))
+			this.filterList = this.list.filter(item => item[this.valueName].includes(value))
+		},
+		refreshValue() {
+			this.$emit('input', '')
+			this.inputData = ''
+			this.$emit('change', '')
+			this.filterList = this.list
+			if (this.multiple) {
+				this.multiSelectList = []
+			}
+		},
+		handleClickItem(e) {
+			if (this.multiple) {
+				this.multiSelect(e)
 			} else {
-				this.listData = this.list
+				this.$emit('input', e[this.keyName])
+				this.inputData = e[this.valueName]
+				this.$emit('change', e)
+				this.changeShow()
 			}
 		},
 		multiSelect(item) {
-			let index = this.multiSelectList.findIndex(res => res[this.valueName] == item[this.valueName])
+			let index = this.multiSelectList.findIndex(
+				res => res[this.valueName] === item[this.valueName]
+			)
 			if (index > -1) {
 				this.multiSelectList.splice(index, 1)
 			} else {
 				this.multiSelectList.push(item)
 			}
 			this.inputData = ''
-			this.listData = this.list
+			this.filterList = this.list
 			this.$emit('input', this.multiSelectList)
 			this.$emit('change', item)
-		},
-		refreshValue() {
-			this.$emit('input', '')
-			this.inputData = ''
-			this.listData = this.list
-			this.$emit('change', '')
-			this.show = false
-		},
-		multiDelete() {
-			this.multiSelectList.splice(0, 1)
-			this.$emit('input', this.multiSelectList)
-			if (this.multiSelectList.length < 1) {
-				this.show = false
-			}
-		},
-		closeContentSelect() {
-			this.isShow = false
-			setTimeout(() => {
-				this.show = false
-			}, 200)
 		}
 	}
 }
 </script>
 <style lang="scss" scoped>
-.wSelect {
-	border: 2rpx solid #dcdfe6;
-	transition: all 0.5s;
-
-	.pickerSelect {
-		border-radius: 6rpx;
-		padding: 0 20rpx;
+.w-select {
+	--select-wrap-width: 200px;
+	--select-wrap-height: 30px;
+	--select-border-radius: 4px;
+	--select-border: 1px solid #dcdfe6;
+	--select-active-border: 1px solid #409eff;
+	--select-options-max-height: 150px;
+	--select-option-item-font-size: 14px;
+	--select-input-font-size: 14px;
+	--no-data-default-color: #999999;
+	--select-options-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+	.select-wrap {
 		position: relative;
-		transition: all 0.6s;
+		width: var(--select-wrap-width);
+		height: var(--select-wrap-height);
+		border-radius: var(--select-border-radius);
+		transition: all 0.2s;
+		border: var(--select-border);
+		background-color: #fff;
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 		input {
 			flex: 1;
+			min-width: 0;
+			width: 100%;
+			height: 100%;
+			padding: 0 2px;
+			font-size: var(--select-input-font-size);
 		}
-		.tips {
-			position: absolute;
-			margin-left: 30rpx;
-			width: 0;
-			height: 0;
-			border-bottom: 12rpx solid #fff;
-			border-left: 12rpx solid transparent;
-			border-right: 12rpx solid transparent;
-			z-index: 1000;
+		.select-content {
+			font-size: var(--select-option-item-font-size);
+			display: flex;
+			align-items: center;
+			.select-content-item {
+				background-color: #f4f4f5;
+				border-radius: var(--select-border-radius);
+				color: #aa93b1;
+				margin-left: 5px;
+				padding: 2px 6px;
+			}
+			.select-content-item-default {
+				color: var(--no-data-default-color);
+				margin-left: 5px;
+			}
 		}
-		.showClose {
-			width: 30rpx;
-			height: 30rpx;
+		.close-icon {
+			width: 15px;
+			height: 15px;
 			position: absolute;
-			right: 14rpx;
+			right: 7px;
 			top: 50%;
+			z-index: 1000;
 			transform: translateY(-50%);
-
 			image {
 				width: 100%;
 				height: 100%;
 			}
 		}
-
-		.arrow {
-			transition: all 0.3s;
+		.select-options {
 			position: absolute;
-			top: 44%;
-			right: 20rpx;
-			border-left: 2rpx solid #999999;
-			border-bottom: 2rpx solid #999999;
-			height: 16rpx;
-			width: 16rpx;
+			left: 0;
+			right: 0;
+			top: var(--select-wrap-height);
+			margin-top: 10px;
+			border-radius: var(--select-border-radius);
+			background-color: #fff;
+			box-shadow: var(--select-options-box-shadow);
+			z-index: 999;
+			max-height: var(--select-options-max-height);
+			overflow-y: auto;
+			padding: 10px;
+			.select-option-item {
+				transition: background-color 0.2s;
+				padding: 5px;
+				font-size: var(--select-option-item-font-size);
+				margin-bottom: 5px;
+			}
+			.item-active {
+				background-color: #f5f7fa;
+				color: #409eff;
+				font-weight: 700;
+			}
+			.options-no-data {
+				color: var(--no-data-default-color);
+				text-align: center;
+				font-size: var(--select-option-item-font-size);
+			}
+		}
+		.w-select-arrow {
+			transition: all 0.3s;
+			border-left: 1px solid #999999;
+			border-bottom: 1px solid #999999;
+			height: 8px;
+			width: 8px;
+			margin: 3px 10px 0;
 			transform: translateY(-50%) rotate(-45deg);
 			-webkit-transform: translateY(-50%) rotate(-45deg);
-			border-right: 2rpx solid transparent;
-			border-top: 2rpx solid transparent;
+			border-right: 1px solid transparent;
+			border-top: 1px solid transparent;
 			display: inline-block;
 		}
-
-		.arrow-up {
-			@extend .arrow;
-			transform: rotate(-235deg);
-		}
-		.multipleChoice {
-			display: flex;
-			align-items: center;
-			input {
-				flex: 1;
-			}
-			.defaultValue {
-				position: absolute;
-				left: 20rpx;
-			}
-			.option {
-				display: flex;
-				align-items: center;
-				background-color: #f4f4f5;
-				border-radius: 10rpx;
-				font-size: 24rpx;
-				color: #aa93b1;
-				padding: 6rpx 12rpx;
-				.img {
-					margin-left: 4rpx;
-					width: 30rpx;
-					height: 30rpx;
-				}
-			}
-
-			.more {
-				background-color: #f4f4f5;
-				border-radius: 10rpx;
-				font-size: 24rpx;
-				color: #aa93b1;
-				margin-left: 10rpx;
-				padding: 6rpx 12rpx;
-			}
+		.w-select-arrow-up {
+			transform: rotate(-225deg);
 		}
 	}
-
-	.content {
-		position: absolute;
-		margin-top: 20rpx;
-		padding: 20rpx;
-		border-radius: 4px;
-		background-color: #fff;
-		box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-		z-index: 999;
-		max-height: 300rpx;
-		overflow-y: auto;
-
-		.item {
-			padding: 10rpx;
-			height: 60rpx;
-			line-height: 40rpx;
-			margin-bottom: 10rpx;
-		}
-
-		.choose {
-			background-color: #f5f7fa;
-			color: #409eff;
-			font-weight: 700;
-		}
+	.select-wrap-active {
+		border: var(--select-active-border);
 	}
-
 	.animation-top {
 		animation-name: slide-top;
-		animation-duration: 0.5s;
+		animation-duration: 0.4s;
 		animation-timing-function: ease-out;
 		animation-fill-mode: both;
 	}
@@ -387,7 +312,7 @@ export default {
 	@keyframes slide-top {
 		0% {
 			opacity: 0;
-			transform: translateY(-20%);
+			transform: translateY(-15%);
 		}
 
 		100% {
@@ -406,18 +331,15 @@ export default {
 			transform: translateY(-20%);
 		}
 	}
-}
-.active {
-	border: 2rpx solid #409eff;
-}
-.contentMask {
-	position: fixed;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 998;
+	.contentMask {
+		position: fixed;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 998;
+	}
 }
 </style>
