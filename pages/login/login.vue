@@ -1,10 +1,16 @@
 <template>
 	<view class="container">
 		<view class="login-icon">
-			<image class="login-img" src="@/static/image/login/login.png" />
+			<image
+				class="login-img"
+				src="@/static/image/login/login.png"
+			/>
 			<view class="title">
 				<view class="titleIcon">
-					<image class="icon-img" src="@/static/image/login/logo.png" />
+					<image
+						class="icon-img"
+						src="@/static/image/login/logo.png"
+					/>
 				</view>
 				<view class="titleInfo">系统</view>
 			</view>
@@ -13,17 +19,30 @@
 			<view class="title">用户登录</view>
 			<view class="common">
 				<view class="left">
-					<image class="icon-img" src="@/static/image/login/username.png" />
+					<image
+						class="icon-img"
+						src="@/static/image/login/username.png"
+					/>
 					<view class="name">用户名:</view>
 				</view>
 				<view class="right">
-					<input type="text" v-model="userInfo.username" placeholder="请输入账号" value="" />
+					<input
+						type="text"
+						v-model="userInfo.username"
+						placeholder="请输入账号"
+						value=""
+					/>
 				</view>
 			</view>
 			<view class="common">
 				<view class="left">
-					<image class="icon-img" src="@/static/image/login/password.png" />
-					<view style="letter-spacing: 12rpx;" class="name">密码:</view>
+					<image
+						class="icon-img"
+						src="@/static/image/login/password.png"
+					/>
+					<view style="letter-spacing: 12rpx;" class="name">
+						密码:
+					</view>
 				</view>
 				<view class="right">
 					<input
@@ -37,7 +56,12 @@
 			</view>
 			<view class="login" @click="login">登录</view>
 			<view class="savePassword">
-				<w-check-box v-model="isSavePassword" @change="checkboxChange">记住密码</w-check-box>
+				<w-check-box
+					v-model="isSavePassword"
+					@change="checkboxChange"
+				>
+					记住密码
+				</w-check-box>
 			</view>
 		</view>
 		<!-- #ifdef APP-PLUS -->
@@ -67,7 +91,9 @@ export default {
 		this.userInfo.username = uni.getStorageSync('username')
 		this.isSavePassword = uni.getStorageSync('savePassword')
 		if (this.isSavePassword) {
-			this.userInfo.password = uni.getStorageSync('password')
+			this.userInfo.password = uni.getStorageSync(
+				'password'
+			)
 			// // 自动登录
 			// this.loginOK = uni.getStorageSync('loginOK')
 			// if (this.loginOK === 1) {
@@ -79,7 +105,10 @@ export default {
 	},
 	methods: {
 		checkboxChange(value) {
-			uni.setStorageSync('savePassword', this.isSavePassword)
+			uni.setStorageSync(
+				'savePassword',
+				this.isSavePassword
+			)
 		},
 		async login() {
 			// if (this.userInfo.username === '') {
@@ -91,9 +120,15 @@ export default {
 			try {
 				// const res = await this.$api.login(this.userInfo)
 				// console.log(res)
-				uni.setStorageSync('username', this.userInfo.username)
+				uni.setStorageSync(
+					'username',
+					this.userInfo.username
+				)
 				if (this.isSavePassword) {
-					uni.setStorageSync('password', this.userInfo.password)
+					uni.setStorageSync(
+						'password',
+						this.userInfo.password
+					)
 				}
 				uni.reLaunch({
 					url: '/pages/index/index'
@@ -140,7 +175,8 @@ export default {
 				color: #ffffff;
 				font-size: 40rpx;
 				white-space: nowrap;
-				font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+				font-family: Source Han Sans CN,
+					Source Han Sans CN-Bold;
 				font-weight: 700;
 			}
 		}
@@ -159,7 +195,8 @@ export default {
 			padding-top: 74rpx;
 			padding-bottom: 68rpx;
 			text-align: center;
-			font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+			font-family: Source Han Sans CN,
+				Source Han Sans CN-Bold;
 			font-weight: 700;
 			color: #0078d4;
 		}
@@ -168,7 +205,12 @@ export default {
 			width: 600rpx;
 			height: 88rpx;
 			margin: 0 auto;
-			background: linear-gradient(0deg, #ffffff, #ffffff 41%, #ffffff);
+			background: linear-gradient(
+				0deg,
+				#ffffff,
+				#ffffff 41%,
+				#ffffff
+			);
 			border: 2rpx solid #d2d2d2;
 			border-radius: 8rpx;
 			margin-bottom: 38rpx;
@@ -183,7 +225,8 @@ export default {
 					width: 148rpx;
 					padding: 0 18rpx;
 					font-size: 28rpx;
-					font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+					font-family: Source Han Sans CN,
+						Source Han Sans CN-Bold;
 					font-weight: 700;
 					color: #666666;
 				}
@@ -218,7 +261,8 @@ export default {
 		transform: translateX(-50%);
 		color: #888888;
 		font-size: 22rpx;
-		font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+		font-family: Source Han Sans CN,
+			Source Han Sans CN-Regular;
 	}
 
 	.savePassword {

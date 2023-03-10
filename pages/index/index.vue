@@ -7,11 +7,12 @@
 			<view class="test ">
 				<w-select
 					style="margin-left: 20rpx;margin-bottom: 20rpx;"
-					defaultValue="所有水果"
 					v-model="valueData"
 					:list="checkboxList"
 					valueName="label"
+					keyName="label"
 				></w-select>
+				<div class="color-red text-24">{{ valueData }}</div>
 			</view>
 		</template>
 		<template #bottom>
