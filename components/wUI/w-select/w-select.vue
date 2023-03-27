@@ -1,14 +1,30 @@
 <template>
 	<view class="w-select">
-		<view :class="isShow ? 'select-wrap-active' : ''" class="select-wrap" @click="changeShow">
+		<view
+			:class="isShow ? 'select-wrap-active' : ''"
+			class="select-wrap"
+			:style="{ width: width, height: height }"
+			@click="changeShow"
+		>
 			<view v-if="multiple" class="select-content">
-				<view class="select-content-item-default" v-if="multiSelectList.length === 0">
+				<view
+					class="select-content-item-default"
+					v-if="multiSelectList.length === 0"
+				>
 					{{ defaultValue }}
 				</view>
-				<view class="select-content-item" v-if="multiSelectList.length > 0">
+				<view
+					class="select-content-item"
+					v-if="multiSelectList.length > 0"
+				>
 					{{ multiSelectList[0][valueName] }}
 				</view>
-				<view class="select-content-item" v-if="multiSelectList.length > 1">{{ multiLength }}</view>
+				<view
+					class="select-content-item"
+					v-if="multiSelectList.length > 1"
+				>
+					{{ multiLength }}
+				</view>
 			</view>
 			<input
 				v-if="!multiple || filterable"
@@ -18,7 +34,11 @@
 				:disabled="!filterable"
 				v-model="inputData"
 			/>
-			<view @click.stop="refreshValue" class="close-icon" v-if="showClose && value.length > 0">
+			<view
+				@click.stop="refreshValue"
+				class="close-icon"
+				v-if="showClose && value.length > 0"
+			>
 				<image :src="refreshUrl" mode=""></image>
 			</view>
 			<view
@@ -28,13 +48,18 @@
 			/>
 			<view
 				v-show="optionsShow"
-				:class="isShow ? 'animation-top' : 'animation-bottom'"
+				:class="
+					isShow ? 'animation-top' : 'animation-bottom'
+				"
 				class="select-options"
 			>
 				<view
 					@click.stop="handleClickItem(item)"
 					:class="
-						multiple && multiSelectList.find(res => res[keyName] === item[keyName])
+						multiple &&
+						multiSelectList.find(
+							res => res[keyName] === item[keyName]
+						)
 							? 'item-active'
 							: value === item[keyName]
 							? 'item-active'
@@ -45,16 +70,33 @@
 				>
 					{{ item[valueName] }}
 				</view>
-				<view class="options-no-data" v-if="filterList.length < 1">无匹配数据~</view>
+				<view
+					class="options-no-data"
+					v-if="filterList.length < 1"
+				>
+					无匹配数据~
+				</view>
 			</view>
 		</view>
-		<view v-if="isShow" @click="closeContentSelect" class="contentMask"></view>
+		<view
+			v-if="isShow"
+			@click="closeContentSelect"
+			class="contentMask"
+		></view>
 	</view>
 </template>
 
 <script>
 export default {
 	props: {
+		width: {
+			type: String,
+			default: '200px'
+		},
+		height: {
+			type: String,
+			default: '30px'
+		},
 		//是否多选
 		multiple: {
 			type: Boolean,
@@ -89,11 +131,13 @@ export default {
 		//显示的内容
 		valueName: {
 			type: String,
+			default: 'label',
 			required: true
 		},
 		// 绑定的内容
 		keyName: {
 			type: String,
+			default: 'value',
 			required: true
 		}
 	},
@@ -103,7 +147,9 @@ export default {
 			deep: true,
 			handler(news) {
 				this.filterList = news
-				const findItem = news.find(item => item[this.keyName] === this.value)
+				const findItem = news.find(
+					item => item[this.keyName] === this.value
+				)
 				if (findItem) {
 					this.inputData = findItem[this.valueName]
 				}
@@ -148,7 +194,9 @@ export default {
 		inputChange(e) {
 			const value = e.detail.value
 			this.$emit('input', value)
-			this.filterList = this.list.filter(item => item[this.valueName].includes(value))
+			this.filterList = this.list.filter(item =>
+				item[this.valueName].includes(value)
+			)
 		},
 		refreshValue() {
 			this.$emit('input', '')
@@ -197,7 +245,8 @@ export default {
 	--select-option-item-font-size: 14px;
 	--select-input-font-size: 14px;
 	--no-data-default-color: #999999;
-	--select-options-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+	--select-options-box-shadow: 0px 0px 12px
+		rgba(0, 0, 0, 0.12);
 	.select-wrap {
 		position: relative;
 		width: var(--select-wrap-width);
